@@ -34,6 +34,19 @@ resource "aws_s3_bucket" "finance-secret-s3-bucket" {
   }
 }
 
+
+resource "aws_s3_bucket" "finance-secret-s3-bucket_log_bucket" {
+  bucket = "finance-secret-s3-bucket-log-bucket"
+}
+
+resource "aws_s3_bucket_logging" "finance-secret-s3-bucket" {
+  bucket = aws_s3_bucket.finance-secret-s3-bucket.id
+
+  target_bucket = aws_s3_bucket.finance-secret-s3-bucket_log_bucket.id
+  target_prefix = "log/"
+}
+
+
 resource "aws_s3_bucket_ownership_controls" "finance-bucket_ownership_controls" {
   bucket = aws_s3_bucket.finance-secret-s3-bucket.id
   rule {
